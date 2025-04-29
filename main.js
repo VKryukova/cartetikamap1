@@ -114,11 +114,29 @@ map.on("load", () => {
     filter: [">", ["get", "POP_MAX"], 1000000],
   });
 
-  map.on("click", ["cities-layer"], (e) => {
-    new maplibregl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(e.features[0].properties.NAME)
-      .addTo(map);
+  map.on("click", (e) => {
+    const cityFeatures = map.queryRenderedFeatures(e.point, {
+      layers: ["cities-layer"],
+    });
+
+    if (cityFeatures.length > 0) {
+      new maplibregl.Popup()
+        .setLngLat(cityFeatures[0].geometry.coordinates)
+        .setHTML(cityFeatures[0].properties.NAME)
+        .addTo(map);
+      return;
+    }
+
+    const countryFeatures = map.queryRenderedFeatures(e.point, {
+      layers: ["countries-layer"],
+    });
+
+    if (countryFeatures.length > 0) {
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(countryFeatures[0].properties.NAME)
+        .addTo(map);
+    }
   });
 
   map.on("mouseenter", "cities-layer", () => {
@@ -126,13 +144,6 @@ map.on("load", () => {
   });
   map.on("mouseleave", "cities-layer", () => {
     map.getCanvas().style.cursor = "";
-  });
-
-  map.on("click", ["countries-layer"], (e) => {
-    new maplibregl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(e.features[0].properties.NAME)
-      .addTo(map);
   });
 
   map.on("mouseenter", "countries-layer", () => {
