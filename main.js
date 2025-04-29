@@ -120,7 +120,7 @@ map.on("load", () => {
     });
 
     if (cityFeatures.length > 0) {
-      new maplibregl.Popup()
+      new maplibregl.Popup({ className: "custom-popup" })
         .setLngLat(cityFeatures[0].geometry.coordinates)
         .setHTML(cityFeatures[0].properties.NAME)
         .addTo(map);
@@ -132,7 +132,7 @@ map.on("load", () => {
     });
 
     if (countryFeatures.length > 0) {
-      new maplibregl.Popup()
+      new maplibregl.Popup({ className: "custom-popup" })
         .setLngLat(e.lngLat)
         .setHTML(countryFeatures[0].properties.NAME)
         .addTo(map);
