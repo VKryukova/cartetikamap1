@@ -5,7 +5,7 @@ const map = new maplibregl.Map({
     sources: {},
     layers: [],
   },
-  center: [51, 0],
+  center: [51, 45],
   zoom: 2,
 });
 
